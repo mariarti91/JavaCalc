@@ -6,6 +6,6 @@ public class Main {
         Scanner in = new Scanner(System.in);
         System.out.println("Input your statement:");
         String statement = in.nextLine();
-        System.out.println(statement);
+        System.out.println(MathParser.Calculate(statement));
     }
 }
