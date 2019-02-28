@@ -33,8 +33,7 @@ public class BaseParser
         while(Character.isWhitespace(current())) next();
     }
 
-    //TODO: вколхозить исключения для вывода ошибок в случае неправильного формата.
-    public String match(String[] tokens)
+    public String matchNoExcept(String[] tokens)
     {
         int pos = current_pos;
         for (String token: tokens)
@@ -59,7 +58,19 @@ public class BaseParser
         return null;
     }
 
-    public String match(String token)
+    public String match(String[] tokens) throws UnexpectedTokenException
+    {
+        String res = matchNoExcept(tokens);
+        if (res == null)
+        {
+            String msg = String.format("В позициии %d ожидалось: ", current_pos + 1);
+            for(String t : tokens) msg += ("'" + t + "' ");
+            throw new UnexpectedTokenException(msg);
+        }
+        return res;
+    }
+
+    public String match(String token) throws UnexpectedTokenException
     {
         return match(new String[]{token});
     }
@@ -67,7 +78,7 @@ public class BaseParser
     public boolean isMatch(String[] tokens)
     {
         int pos = current_pos;
-        String res = match(tokens);
+        String res = matchNoExcept(tokens);
         current_pos = pos;
         return res != null;
     }
@@ -75,5 +86,10 @@ public class BaseParser
     public boolean isMatch(String token)
     {
         return isMatch(new String[]{token});
+    }
+
+    public class UnexpectedTokenException extends Exception
+    {
+        UnexpectedTokenException(String msg) {super(msg);}
     }
 }

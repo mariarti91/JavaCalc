@@ -28,7 +28,7 @@ public class MathParser extends BaseParser
         return Double.parseDouble(buf);
     }
 
-    protected double T3()
+    protected double T3() throws UnexpectedTokenException
     {
         if(isMatch("("))
         {
@@ -40,7 +40,7 @@ public class MathParser extends BaseParser
         return N();
     }
 
-    protected double T2()
+    protected double T2() throws UnexpectedTokenException
     {
         if(isMatch("-"))
         {
@@ -50,7 +50,7 @@ public class MathParser extends BaseParser
         return T3();
     }
 
-    protected double T1()
+    protected double T1() throws UnexpectedTokenException
     {
         double res = T2();
         String[] tokens = {"*", "/"};
@@ -63,7 +63,7 @@ public class MathParser extends BaseParser
         return res;
     }
 
-    protected double E()
+    protected double E() throws UnexpectedTokenException
     {
         double res = T1();
         String[] tokens = {"+", "-"};
@@ -76,12 +76,12 @@ public class MathParser extends BaseParser
         return res;
     }
 
-    public double result()
+    public double result() throws UnexpectedTokenException
     {
         return E();
     }
 
-    public static double Calculate(String input)
+    public static double Calculate(String input) throws UnexpectedTokenException
     {
         MathParser mp = new MathParser(input);
         return mp.result();

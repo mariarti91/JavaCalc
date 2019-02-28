@@ -19,7 +19,14 @@ public class MainDialog extends JDialog {
     private void calculate()
     {
         String statement = tfStatement.getText();
-        double result = MathParser.Calculate(statement);
-        tfStatement.setText(String.valueOf(result));
+        try
+        {
+            double result = MathParser.Calculate(statement);
+            tfStatement.setText(String.valueOf(result));
+        }
+        catch (BaseParser.UnexpectedTokenException ex)
+        {
+            tfStatement.setText(ex.getMessage());
+        }
     }
 }
